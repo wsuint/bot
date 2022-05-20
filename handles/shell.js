@@ -88,7 +88,7 @@ module.exports = async (data, next) => {
     try {
         const script = new vm.Script(scriptText)
         if (prompt == "#") {
-            if (id != masterQQ) throw new Error("权限不足")
+            if (id != masterQQ) throw new Error("权限不足,普通群员请用>作为提示符")
             script.runInContext(vm.createContext(adminContext), {
                 timeout: 30000
             })
