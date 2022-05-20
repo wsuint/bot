@@ -18,7 +18,7 @@ QQ机器人
     "qq":"机器人QQ号",
     "password":"机器人密码",
     "verifyKey":"mirai-api-http的verifyKey",
-    "baseUrl":"mirai-api-http的verifyKey的服务器地址",
+    "baseUrl":"mirai-api-http的服务器地址",
     "ruyi_appKey":"在ruyi.ai 申请的APIKEY",
     "ruyi_baseUrl":"http://api.ruyi.ai/v1/message",
     "name":"机器人名字",
