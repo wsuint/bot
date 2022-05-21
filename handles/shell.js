@@ -97,15 +97,19 @@ module.exports = async (data, next) => {
     current.groupId = groupId
     current.id = id
     try {
-        const script = new vm.Script(scriptText)
         if (prompt == "#") {
-            if (!masterQQ.includes(id)) throw new Error("权限不足,普通群员请用>作为提示符")
-            script.runInContext(vm.createContext(adminContext), {
-                timeout: 30000
+            if (!masterQQ.includes(id)){ throw new Error("权限不足,普通群员请用>作为提示符")}else{
+            const script = new vm.Script(scriptText)
+
+		    script.runInContext(vm.createContext(adminContext), {
+               timeout: 30000
             })
+	   }
         }
         if (prompt == ">") {
-            script.runInContext(vm.createContext(context), {
+ const script = new vm.Script(scriptText)
+
+		script.runInContext(vm.createContext(context), {
                 timeout: 3000
             })
         }
