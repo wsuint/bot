@@ -10,7 +10,7 @@ const completeMessages = []
 const groupQueue = {}
 const masterQueue = []
 const sendGroupMessage = async (group, message, id) => {
-    const admin = masterQQ == id
+    const admin = masterQQ.includes(id)
     const action = async () => { return  bot.sendMessage({ group, message }) }
     action.group = group
     if (admin) {
@@ -24,7 +24,7 @@ const sendGroupMessage = async (group, message, id) => {
     }
 }
 const sendGroupNudge = async (group, target, id) => {
-    const admin = masterQQ == id
+    const admin = masterQQ.includes(id)
     const action = async () =>{  return  bot.sendNudge({ group, target })}
        
 
