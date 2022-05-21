@@ -62,7 +62,7 @@ const context = {
         if (!msg) return
         const { data } = await axios.get(`https://baike.baidu.com/item/${encodeURI(msg)}`)
         const $ = cheerio.load(data)
-        _send(textMsg($(".para:lt(2)").text().substring(0,100)))
+        _send(textMsg($(".para:lt(2)").text().substring(0, 100)))
     },
     output(msg) {
         _send(textMsg(String(msg)))
@@ -98,18 +98,16 @@ module.exports = async (data, next) => {
     current.id = id
     try {
         if (prompt == "#") {
-            if (!masterQQ.includes(id)){ throw new Error("权限不足,普通群员请用>作为提示符")}else{
-            const script = new vm.Script(scriptText)
-
-		    script.runInContext(vm.createContext(adminContext), {
-               timeout: 30000
-            })
-	   }
+            if (!masterQQ.includes(id)) { throw new Error("权限不足,普通群员请用>作为提示符") } else {
+                const script = new vm.Script(scriptText)
+                script.runInContext(vm.createContext(adminContext), {
+                    timeout: 30000
+                })
+            }
         }
         if (prompt == ">") {
- const script = new vm.Script(scriptText)
-
-		script.runInContext(vm.createContext(context), {
+            const script = new vm.Script(scriptText)
+            script.runInContext(vm.createContext(context), {
                 timeout: 3000
             })
         }
