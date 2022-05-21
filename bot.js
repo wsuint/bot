@@ -11,7 +11,7 @@ const groupQueue = {}
 const masterQueue = []
 const sendGroupMessage = async (group, message, id) => {
     const admin = masterQQ.includes(id)
-    const action = async () => { return  bot.sendMessage({ group, message }) }
+    const action = async () => { return bot.sendMessage({ group, message }) }
     action.group = group
     if (admin) {
         masterQueue.push(action)
@@ -25,11 +25,11 @@ const sendGroupMessage = async (group, message, id) => {
 }
 const sendGroupNudge = async (group, target, id) => {
     const admin = masterQQ.includes(id)
-    const action = async () =>{  return  bot.sendNudge({ group, target })}
-       
+    const action = async () => { return bot.sendNudge({ group, target }) }
+
 
     action.group = group
-     if (admin) {
+    if (admin) {
         masterQueue.push(action)
     } else {
         const key = `${group}::${id}`
@@ -37,18 +37,23 @@ const sendGroupNudge = async (group, target, id) => {
         if (!gueue) gueue = groupQueue[key] = []
         gueue.push(action)
         if (gueue.length > 5) gueue.length = 5
-    }    
+    }
 }
-const recaGroupMessage = async (id) => {
+const recaAllGroupMessage = async (id) => {
     for (const message of completeMessages) {
         const { messageId, group } = message
-        if (group != id||!messageId) return
+        if (group != id || !messageId) return
         console.log(messageId)
         await bot.recall({ messageId })
         delete message
         await sleep(500)
     }
 }
+const recaMessage = async (messageId) => {
+    await bot.recall({ messageId })
+}
+
+
 const send = async action => {
     const messageId = await action()
     completeMessages.push({ messageId, group: action.group, time: now() })
@@ -89,9 +94,10 @@ setImmediate(async () => {
 module.exports = {
     bot,
     sendGroupMessage,
-    recaGroupMessage,
+    recaAllGroupMessage,
     sendGroupNudge,
     sendMessage,
+    recaMessage,
     status,
 }
 

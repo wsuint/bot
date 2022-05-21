@@ -1,6 +1,6 @@
 const { Message } = require('mirai-js')
 const vm = require("vm")
-const { sendGroupMessage, sendGroupNudge,recaGroupMessage, status } = require('../bot')
+const { sendGroupMessage, sendGroupNudge,recaAllGroupMessage, status } = require('../bot')
 const axios = require("axios")
 const { masterQQ } = require("../config.json")
 const {sleep,textMsg}=require('../utils')
@@ -77,7 +77,7 @@ const adminContext = {
         _send(textMsg(`${status.on ? 'on' : 'off'}`))
     },
     撤回() {
-        recaGroupMessage(current.groupId)
+        recaAllGroupMessage(current.groupId)
     }
 }
 module.exports = async (data, next) => {
