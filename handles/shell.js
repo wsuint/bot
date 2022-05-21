@@ -1,9 +1,11 @@
 const { Message } = require('mirai-js')
 const vm = require("vm")
-const { sendGroupMessage, sendGroupNudge,recaAllGroupMessage, status } = require('../bot')
+const { sendGroupMessage, sendGroupNudge, recaAllGroupMessage, status } = require('../bot')
 const axios = require("axios")
 const { masterQQ } = require("../config.json")
-const {sleep,textMsg}=require('../utils')
+const { sleep, textMsg } = require('../utils')
+const cheerio = require("cheerio")
+
 const current = {
     groupId: 0,
     id: 0
@@ -17,24 +19,24 @@ const context = {
         if (stop === undefined) [start, stop] = [0, start];
         for (let i = start; i < stop; i += step) yield i;
     },
-    each(num,cb){
-        num=Number(num)
-        if(num<0){
-            for(let i=0;i>num;i--){
+    each(num, cb) {
+        num = Number(num)
+        if (num < 0) {
+            for (let i = 0; i > num; i--) {
                 cb(i)
             }
         }
-        if(num>0){
-            for(let i=0;i<num;i++){
+        if (num > 0) {
+            for (let i = 0; i < num; i++) {
                 cb(i)
             }
         }
-        if(num=0){
+        if (num = 0) {
             cb(num)
         }
     },
     戳(id) {
-        sendGroupNudge(current.groupId, id,current.id)
+        sendGroupNudge(current.groupId, id, current.id)
     },
     async 妹子() {
         const message = new Message()
@@ -47,14 +49,20 @@ const context = {
         message.addImageUrl('https://api.xiaobaibk.com/api/pic/?pic=meizi')
         _send(message)
     },
-    功能(){
-       _send(textMsg(Object.keys(context).join("\n")))
+    功能() {
+        _send(textMsg(Object.keys(context).join("\n")))
     },
     at(id, msg) {
         const message = new Message()
         message.addAt(id)
         message.addText(String(msg || ""))
         _send(message)
+    },
+    async 百科(msg) {
+        if (!msg) return
+        const { data } = await axios.get(`https://baike.baidu.com/item/${encodeURI(msg)}`)
+        const $ = cheerio.load(data)
+        _send(textMsg($(".para:lt(2)").text().substring(0,100)))
     },
     output(msg) {
         _send(textMsg(String(msg)))
@@ -91,7 +99,7 @@ module.exports = async (data, next) => {
     try {
         const script = new vm.Script(scriptText)
         if (prompt == "#") {
-            if ( !masterQQ.includes(id)) throw new Error("权限不足,普通群员请用>作为提示符")
+            if (!masterQQ.includes(id)) throw new Error("权限不足,普通群员请用>作为提示符")
             script.runInContext(vm.createContext(adminContext), {
                 timeout: 30000
             })
@@ -102,6 +110,6 @@ module.exports = async (data, next) => {
             })
         }
     } catch (e) {
-       _send(textMsg(String(e) + "\n@我获得帮助 输入>功能()获得函数列表"))
+        _send(textMsg(String(e) + "\n@我获得帮助 输入>功能()获得函数列表"))
     }
 }
