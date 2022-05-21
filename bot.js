@@ -42,8 +42,9 @@ const sendGroupNudge = async (group, target, id) => {
 const recaGroupMessage = async (id) => {
     for (const message of completeMessages) {
         const { messageId, group } = message
-        if (group != id) return
-        bot.recall({ messageId })
+        if (group != id||!messageId) return
+        console.log(messageId)
+        await bot.recall({ messageId })
         delete message
         await sleep(500)
     }
