@@ -62,7 +62,7 @@ const context = {
         if (!msg) return
         const { data } = await axios.get(`https://baike.baidu.com/item/${encodeURI(msg)}`)
         const $ = cheerio.load(data)
-        _send(textMsg($(".para:lt(2)").text().substring(0, 200)))
+        _send(textMsg($(`.para:lt(3)`).text().substring(0, 200)))
     },
     output(msg) {
         _send(textMsg(String(msg)))
