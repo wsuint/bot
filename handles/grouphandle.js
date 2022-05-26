@@ -10,6 +10,7 @@ const permissionS = {
 module.exports = new Middleware().use((data, next) => {
     data.messageChain = data.messageChain.filter(({ type }) => ['Plain', 'At','Quote'].includes(type))
     data.texts = data.messageChain.filter(({ type }) => type == "Plain").map(({ text }) => text)
+    console.log("???")
     if (data.messageChain.length > 0) { next() }
 }).use((data, next) => {
 
