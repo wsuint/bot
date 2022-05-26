@@ -101,16 +101,16 @@ module.exports = async (data, next) => {
         if (prompt == "#") {
             if (!masterQQ.includes(id)) { throw new Error("权限不足,普通群员请用>作为提示符") } else {
                 const script = new vm.Script(scriptText)
-                script.runInContext(vm.createContext(adminContext), {
+               process.nextTick(()=> script.runInContext(vm.createContext(adminContext), {
                     timeout: 30000
-                })
+                }))
             }
         }
         if (prompt == ">") {
             const script = new vm.Script(scriptText)
-            script.runInContext(vm.createContext(context), {
+            process.nextTick(()=> script.runInContext(vm.createContext(context), {
                 timeout: 3000
-            })
+            }))
         }
     } catch (e) {
         _send(textMsg(String(e) + "\n@我获得帮助 输入>功能()获得函数列表"))
