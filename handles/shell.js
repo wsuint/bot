@@ -40,10 +40,18 @@ const context = {
     },
     async 妹子() {
         const message = new Message()
-        let { data } = await axios.get('https://shengapi.cn/api/bizi.php?msg=1')
+        const { data } = await axios.get('https://shengapi.cn/api/bizi.php?msg=1')
         message.addImageUrl(data.replace("±img=", "").replace("±", ""))
         _send(message)
     },
+     async 妹子1(){
+          const { data } = await axios.get('http://api.wpbom.com/api/picture.php?msg=%E7%BE%8E%E5%A5%B3')
+           const message = new Message()
+
+	   message.addImageUrl(data)
+          _send(message)
+   },
+  
     妹子2() {
         const message = new Message()
         message.addImageUrl('https://api.xiaobaibk.com/api/pic/?pic=meizi')
@@ -101,16 +109,12 @@ module.exports = async (data, next) => {
         if (prompt == "#") {
             if (!masterQQ.includes(id)) { throw new Error("权限不足,普通群员请用>作为提示符") } else {
                 const script = new vm.Script(scriptText)
-               process.nextTick(()=> script.runInContext(vm.createContext(adminContext), {
-                    timeout: 30000
-                }))
+                process.nextTick(()=> script.runInContext(vm.createContext(adminContext),{timeout: 30000 }))
             }
         }
         if (prompt == ">") {
             const script = new vm.Script(scriptText)
-            process.nextTick(()=> script.runInContext(vm.createContext(context), {
-                timeout: 3000
-            }))
+	    process.nextTick(()=>script.runInContext(vm.createContext(context),{timeout: 3000}))
         }
     } catch (e) {
         _send(textMsg(String(e) + "\n@我获得帮助 输入>功能()获得函数列表"))
