@@ -20,7 +20,7 @@ const sendGroupMessage = async (group, message, id) => {
         let gueue = groupQueue[key]
         if (!gueue) gueue = groupQueue[key] = []
         gueue.push(action)
-        if (gueue.length > 10) gueue.length = 10
+        if (gueue.length > 10) gueue.length = 0
     }
 }
 const sendGroupNudge = async (group, target, id) => {
