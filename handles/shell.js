@@ -38,25 +38,13 @@ const context = {
     戳(id) {
         sendGroupNudge(current.groupId, id, current.id)
     },
-    async 妹子() {
-        const message = new Message()
-        const { data } = await axios.get('https://shengapi.cn/api/bizi.php?msg=1')
-        message.addImageUrl(data.replace("±img=", "").replace("±", ""))
-        _send(message)
-    },
-     async 妹子1(){
+     async 妹子(){
           const { data } = await axios.get('http://api.wpbom.com/api/picture.php?msg=%E7%BE%8E%E5%A5%B3')
            const message = new Message()
 
 	   message.addImageUrl(data)
           _send(message)
    },
-  
-    妹子2() {
-        const message = new Message()
-        message.addImageUrl('https://api.xiaobaibk.com/api/pic/?pic=meizi')
-        _send(message)
-    },
     功能() {
         _send(textMsg(Object.keys(context).join("\n")))
     },
