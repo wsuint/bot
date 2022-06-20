@@ -2,6 +2,10 @@ const { Bot } = require('mirai-js')
 const schedule = require("node-schedule")
 const { masterQQ } = require('./config.json')
 const { now, sleep } = require('./utils')
+const Gueue=require("./gueue.js")
+const gueues=[]
+const adminGueue=new Gueue(10,-1)
+adminGueue.start()
 const bot = new Bot()
 const status = {
     on: true,
@@ -14,14 +18,16 @@ const sendGroupMessage = async (group, message, id) => {
     const action = async () => bot.sendMessage({ group, message }) 
     action.group = group
     if (admin) {
-        masterQueue.push(action)
+       adminGueue.push(action)
     } else {
         const key = `${group}:${id}`
-        let gueue
-        if(!groupQueue[key])groupQueue[key]=[]
-        gueue=groupQueue[key]
+        let gueue=gueues.find(({id})=>id==key)
+        if(!gueue){
+          gueue=new Gueue(1000,10,key)
+          gueue.start()
+          gueues.push(gueue)
+        }
         gueue.push(action)
-        if (gueue.length > 10) gueue.length =10
     }
 }
 const sendGroupNudge = async (group, target, id) => {
@@ -31,11 +37,14 @@ const sendGroupNudge = async (group, target, id) => {
     if (admin) {
         masterQueue.push(action)
     } else {
-        const key = `${group}::${id}`
-        let gueue = groupQueue[key]
-        if (!gueue) gueue = groupQueue[key] = []
+        const key = `${group}:${id}`
+        let gueue=gueues.find(({id})=>id==key)
+        if(!gueue){
+          gueue=new Gueue(1000,10,key)
+          gueue.start()
+          gueues.push(gueue)
+        }
         gueue.push(action)
-        if (gueue.length > 5) gueue.length = 5
     }
 }
 const recaAllGroupMessage = async (id) => {
@@ -62,32 +71,6 @@ const sendMessage = (id, message) => {
         message
     })
 }
-setImmediate(async () => {
-    while (true) {
-        for (const queue of Object.values(groupQueue)) {
-            const action = queue.shift()
-            if (action && status.on) {
-                await send(action)
-            }
-        }
-       // completeMessages.forEach(message => {
-       // const { time } = message
-       //if (now() - time > 1000 * 120) {
-       //    delete message
-          //  }
-        //})
-        await sleep(1000)
-    }
-})
-setImmediate(async () => {
-    while (true) {
-        const action = masterQueue.shift()
-        if (action) {
-            await send(action)
-        }
-        await sleep(10)
-    }
-})
 module.exports = {
     bot,
     sendGroupMessage,
