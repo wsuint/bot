@@ -1,3 +1,4 @@
+const { now, sleep } = require('./utils')
 class Gueue{
     constructor(time=1000,max=10,id=getUuid()){
         this.list=[]
@@ -6,9 +7,16 @@ class Gueue{
         this.time=time
         this.max=max
         this.id=id
+        this.isloop=true
     }
     start(){
-      this.timer=setInterval(this.loop.bind(this),this.time)
+     // this.timer=setInterval(this.loop.bind(this),this.time)
+     setImmediate(async ()=>{
+       while(this.isloop){
+        this.loop()
+        await sleep(this.time)
+       }
+     })
     }
     loop(){
       const action=this.list.shift()
@@ -25,7 +33,7 @@ class Gueue{
        }
     }
     stop(){
-        clearInterval(this.time)
+     this.isloop=false
     }
 }
 function getUuid() {

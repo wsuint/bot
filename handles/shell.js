@@ -5,7 +5,6 @@ const axios = require("axios")
 const { masterQQ } = require("../config.json")
 const { sleep, textMsg } = require('../utils')
 const cheerio = require("cheerio")
-
 const current = {
     groupId: 0,
     id: 0

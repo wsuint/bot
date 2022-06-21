@@ -4,7 +4,7 @@ const { masterQQ } = require('./config.json')
 const { now, sleep } = require('./utils')
 const Gueue=require("./gueue.js")
 const gueues=[]
-const adminGueue=new Gueue(10,-1)
+const adminGueue=new Gueue(50,-1)
 adminGueue.start()
 const bot = new Bot()
 const status = {
