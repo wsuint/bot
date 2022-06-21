@@ -1,5 +1,5 @@
 const { Message } = require('mirai-js')
-const vm = require("vm")
+const {VM, VMScript} = require('vm2')
 const { sendGroupMessage, sendGroupNudge, recaAllGroupMessage, status } = require('../bot')
 const axios = require("axios")
 const { masterQQ } = require("../config.json")
@@ -64,9 +64,10 @@ const context = {
         _send(textMsg(String(msg)))
     }
 }
-
-
-
+const vm = new VM({
+    timeout: 3000,
+    sandbox:context
+})
 const adminContext = {
     ...context,
     on() {
@@ -84,24 +85,33 @@ const adminContext = {
         recaAllGroupMessage(current.groupId)
     }
 }
+const vmAdmin = new VM({
+    timeout: 30000,
+    sandbox:context
+})
+
+const blist=[]
 module.exports = async (data, next) => {
     const { isAtMe, permissionText, id, memberName, groupId, groupName, messageChain, texts } = data
-    const text = texts.join("").trim("").replace("import", "")
+    const text = texts.join("").trim("")
+    if(blist.includes(id))return
     const prompt = text[0]
     const scriptText = text.substr(1)
     if (!["#", ">"].includes(prompt)) return next()
     current.groupId = groupId
     current.id = id
+    if(/require|eval|Function|import/.test(text)){
+       _send(textMsg(`检测到危险代码! 已经将${id}加入黑名单! `))
+       blist.push(id)
+       return
+    }
     try {
-      const script = new vm.Script(scriptText)
-    
-
     if (prompt == "#") {
        if (!masterQQ.includes(id))  throw new Error("权限不足,非BOT管理员请用>作为提示符") 
-       script.runInContext(vm.createContext(adminContext),{timeout: 30000 })
+       vmAdmin.run(scriptText)
     }
     if (prompt == ">") {
-       script.runInContext(vm.createContext(context),{timeout: 3000})
+       vm.run(scriptText)
     }
     } catch (e) {
         _send(textMsg(String(e) + "\n@我获得帮助 输入>功能()获得函数列表"))

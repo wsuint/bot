@@ -4,6 +4,7 @@
     "cheerio": "^1.0.0-rc.11",
     "dayjs": "^1.11.2",
     "mirai-js": "^2.6.1",
-    "node-schedule": "^2.1.0"
+    "node-schedule": "^2.1.0",
+    "vm2": "^3.9.9"
   }
 }
