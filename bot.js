@@ -11,8 +11,6 @@ const status = {
     on: true,
 }
 const completeMessages = []
-const groupQueue = {}
-const masterQueue = []
 const sendGroupMessage = async (group, message, id) => {
     const admin = masterQQ.includes(id)
     const action = async () => bot.sendMessage({ group, message }) 
@@ -32,10 +30,11 @@ const sendGroupMessage = async (group, message, id) => {
 }
 const sendGroupNudge = async (group, target, id) => {
     const admin = masterQQ.includes(id)
-    const action = async () => bot.sendNudge({ group, target }) 
+    
+    const action = async () => bot.sendNudge({ group, target })     
     action.group = group
     if (admin) {
-        masterQueue.push(action)
+        adminGueue.push(action)
     } else {
         const key = `${group}:${id}`
         let gueue=gueues.find(({id})=>id==key)
