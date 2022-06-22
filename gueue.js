@@ -10,7 +10,6 @@ class Gueue{
         this.isloop=true
     }
     start(){
-     // this.timer=setInterval(this.loop.bind(this),this.time)
      setImmediate(async ()=>{
        while(this.isloop){
         this.loop()
@@ -18,9 +17,11 @@ class Gueue{
        }
      })
     }
-    loop(){
+   async  loop(){
       const action=this.list.shift()
-      if(action)action()
+      if(action){
+       action().catch(e=>{})
+      }
     }
     push(action){
        if(this.max==-1){
