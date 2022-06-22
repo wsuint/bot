@@ -62,6 +62,16 @@ const context = {
     },
     output(msg) {
         _send(textMsg(String(msg)))
+    },
+    async 搜图(txt){
+          if(!txt)return
+          _send(textMsg('搜图返回稍慢 请等待'))
+          const {data:{picUrl,title}}=await axios.get(`http://api.yanxi520.cn/api/b_sst.php?msg=${encodeURI(txt)}&type=sougou`)
+          const message = new Message()
+          message.addText(title)
+          message.addImageUrl(picUrl)
+          _send(message)
+
     }
 }
 const vm = new VM({
@@ -84,7 +94,7 @@ const adminContext = {
 }
 const vmAdmin = new VM({
     timeout: 30000,
-    sandbox:context
+    sandbox:adminContext
 })
 
 const blist=[]
