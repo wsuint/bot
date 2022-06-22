@@ -57,7 +57,7 @@ const context = {
         if (!msg) return
         const { data } = await axios.get(`https://baike.baidu.com/item/${encodeURI(msg)}`)
         const $ = cheerio.load(data)
-        let s=$(`.para:lt(3)`).text().substring(0, 200).replace(" ","")
+        let s=$(`.para:lt(3)`).text()
         _send(textMsg(s?s:"未找到词条！"))
     },
     output(msg) {
@@ -92,7 +92,7 @@ const adminContext = {
         _send(textMsg(`${status.on ? 'on' : 'off'}`))
     },
     dpush(qq){
-     if(!qq)return
+      if(!qq)return
       blist.push(qq)
    }
 }

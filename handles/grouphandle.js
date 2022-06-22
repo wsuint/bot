@@ -12,8 +12,6 @@ module.exports = new Middleware().use((data, next) => {
     data.texts = data.messageChain.filter(({ type }) => type == "Plain").map(({ text }) => text)
     if (data.messageChain.length > 0) { next() }
 }).use((data, next) => {
-
-    
     data.isAtMe = data.messageChain.find((item) => item.type == "At" && item.target == qq) ? true : false
     data.permission = data.sender.permission
     data.permissionText = permissionS[data.sender.permission]
