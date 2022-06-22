@@ -1,6 +1,6 @@
 const { Message } = require('mirai-js')
 const {VM, VMScript} = require('vm2')
-const { sendGroupMessage, sendGroupNudge, recaAllGroupMessage, status } = require('../bot')
+const { sendGroupMessage, sendGroupNudge, status } = require('../bot')
 const axios = require("axios")
 const { masterQQ } = require("../config.json")
 const { sleep, textMsg } = require('../utils')
@@ -80,9 +80,6 @@ const adminContext = {
     },
     status() {
         _send(textMsg(`${status.on ? 'on' : 'off'}`))
-    },
-    撤回() {
-        recaAllGroupMessage(current.groupId)
     }
 }
 const vmAdmin = new VM({
