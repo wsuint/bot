@@ -17,7 +17,7 @@ const sendGroupMessage = async (group, message, id) => {
     action.group = group
     if (admin) {
        adminGueue.push(action)
-    } else {
+    } else if(status.on){
         const key = `${group}:${id}`
         let gueue=gueues.find(({id})=>id==key)
         if(!gueue){
@@ -34,7 +34,7 @@ const sendGroupNudge = async (group, target, id) => {
     action.group = group
     if (admin) {
         adminGueue.push(action)
-    } else {
+    } else if(status.on){
         const key = `${group}:${id}`
         let gueue=gueues.find(({id})=>id==key)
         if(!gueue){

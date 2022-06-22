@@ -1,7 +1,9 @@
 const { Middleware } = require('mirai-js')
 const at = require("./at")
 const shell=require('./shell')
-const { qq } = require('../config.json')
+const { qq,masterQQ } = require('../config.json')
+const {  status } = require('../bot')
+
 const permissionS = {
     'OWNER': "群主",
     'MEMBER': "群员",
@@ -20,6 +22,7 @@ module.exports = new Middleware().use((data, next) => {
     data.groupName = data.sender.group.name
     data.memberName = data.sender.memberName
     data.quote=data.messageChain.find((item)=>item.type=="Quote")
+    if(!status.on&&!masterQQ.includes(data.id))return
     next()
   
 }).use(at).use(shell).done()
