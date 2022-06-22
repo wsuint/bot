@@ -90,7 +90,11 @@ const adminContext = {
     },
     status() {
         _send(textMsg(`${status.on ? 'on' : 'off'}`))
-    }
+    },
+    dpush(qq){
+     if(!qq)return
+      blist.push(qq)
+   }
 }
 const vmAdmin = new VM({
     timeout: 30000,
